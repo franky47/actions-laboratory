@@ -2,13 +2,18 @@ name: Comment to PR
 
 on:
   issue_comment:
-    types: [created]
+    types: [created, edited]
 
 jobs:
   commentToPR:
     runs-on: ubuntu-latest
     if: ${{ !github.event.issue.pull_request }}
     steps:
+    - name: Add initial reaction (processing)
+      uses: peter-evans/create-or-update-comment@5221bf4aa615e5c6e95bb142f9673a9c791be2cd
+      with:
+        comment-id: ${{ github.event.comment.id }}
+        reactions: eyes
     - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
     - uses: actions/setup-node@56899e050abffc08c2b3b61f3ec6a79a9dc3223d
       with:
@@ -28,3 +33,25 @@ jobs:
         title: "Submission by ${{ github.event.comment.user.login }}"
         body: "${{ github.event.comment.body }}"
         commit-message: "Submission by ${{ github.event.comment.user.login }}"
+    - name: Add final reaction (failed)
+      if: ${{ failure() }}
+      uses: peter-evans/create-or-update-comment@5221bf4aa615e5c6e95bb142f9673a9c791be2cd
+      with:
+        comment-id: ${{ github.event.comment.id }}
+        reactions: confused
+    - name: Add final reaction (success)
+      if: ${{ success() }}
+      uses: peter-evans/create-or-update-comment@5221bf4aa615e5c6e95bb142f9673a9c791be2cd
+      with:
+        comment-id: ${{ github.event.comment.id }}
+        reactions: '+1'
+
+
+
+
+
+
+
+
+
+
