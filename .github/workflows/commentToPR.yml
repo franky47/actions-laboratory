@@ -7,6 +7,8 @@ on:
 jobs:
   debug:
     runs-on: ubuntu-latest
+    if: ${{ !github.event.issue.pull_request }}
     steps:
-    - run: echo ${{ event }}
+    - run: echo ${{ github.event }}
     - run: echo ${{ env }}
+    
