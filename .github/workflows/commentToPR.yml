@@ -1,6 +1,8 @@
 name: Comment to PR
 
-on: issue_comment
+on:
+  issue_comment:
+    types: [created]
 
 jobs:
   debug:
