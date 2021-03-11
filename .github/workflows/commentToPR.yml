@@ -27,3 +27,4 @@ jobs:
         delete-branch: true
         title: "Submission by ${{ github.event.comment.user.login }}"
         body: "${{ github.event.comment.body }}"
+        commit-message: "Submission by ${{ github.event.comment.user.login }}"
