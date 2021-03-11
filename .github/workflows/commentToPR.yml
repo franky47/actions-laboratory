@@ -9,6 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !github.event.issue.pull_request }}
     steps:
-    - run: echo ${{ github.event }}
-    - run: echo ${{ env }}
+    - run: echo ${{ toJSON(github.event) }}
+    - run: echo ${{ toJSON(env) }}
     
