@@ -22,4 +22,4 @@ jobs:
         branch: "commentToPR/${{ github.event.comment.id }}"
         delete-branch: true
         title: "Submission by ${{ github.event.comment.user.login }}"
-        body: "${{ github.event.comment.body }}
+        body: "${{ github.event.comment.body }}"
