@@ -13,14 +13,14 @@ jobs:
     - uses: actions/setup-node@56899e050abffc08c2b3b61f3ec6a79a9dc3223d
       with:
         node-version: 14.x
-    - uses: DamianReeves/write-file-action@v1
+    - uses: DamianReeves/write-file-action@e19fd875ed54f16fc583a3486e62547ce4a5dde8
       with:
         path: "${{ github.workspace }}/commentToPR/${{ github.event.comment.id }}.md"
         contents: ${{ github.event.comment.body }}
         write-mode: append
     - run: ls -la ./commentToPR
     - run: cat "./commentToPR/${{ github.event.comment.id }}.md"
-    - uses: peter-evans/create-pull-request@v3
+    - uses: peter-evans/create-pull-request@052fc72b4198ba9fbc81b818c6e1859f747d49a8
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: "commentToPR/${{ github.event.comment.id }}"
