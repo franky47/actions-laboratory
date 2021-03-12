@@ -1,0 +1,11 @@
+name: Display PR env
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  echoPREnv:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "${{ env }}"
