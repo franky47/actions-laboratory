@@ -9,3 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: echo "${{ env }}"
+    - id: tag
+      name: Generate release tag
+      run: echo "::set-output name=value::prod.$(date +%Y-%m-%d_%H:%M).$(echo $GITHUB_SHA | cut -c1-8)"
+    - run: echo ${{ steps.tag.outputs.value }}
