@@ -11,5 +11,5 @@ jobs:
     steps:
     - id: tag
       name: Generate release tag
-      run: echo "::set-output name=value::prod.$(date +%Y-%m-%d_%H:%M).$(echo $GITHUB_SHA | cut -c1-8)"
+      run: echo "::set-output name=value::prod.$(date +%Y-%m-%d_%H:%M:%S).$(echo $GITHUB_SHA | cut -c1-8)"
     - run: echo ${{ steps.tag.outputs.value }}
