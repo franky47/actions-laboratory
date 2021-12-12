@@ -6,6 +6,7 @@ on:
 jobs:
   echoPREnv:
     runs-on: ubuntu-latest
+    if: ${{ github.ref_name == 'prod' || github.ref_name == 'staging' }}
     steps:
     - id: tag
       name: Generate release tag
