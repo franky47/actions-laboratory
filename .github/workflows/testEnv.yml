@@ -12,3 +12,7 @@ jobs:
       name: Generate release tag
       run: echo "::set-output name=value::${{ github.ref_name }}.$(date +%Y-%m-%d_%H:%M:%S).$(echo $GITHUB_SHA | cut -c1-8)"
     - run: echo ${{ steps.tag.outputs.value }}
+    - uses: hole19/git-tag-action@67be507b7332465ace778ee3dad62657482fedfb
+      env:
+        TAG: ${{ steps.tag.outputs.value }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
