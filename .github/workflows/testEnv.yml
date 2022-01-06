@@ -18,21 +18,17 @@ jobs:
       env:
         TAG: ${{ steps.tag.outputs.value }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Gets latest created release info
-      id: latest_release_info
-      uses: jossef/action-latest-release-info@v1.1.0
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-    - name: Generate release notes
+    - uses: Helmisek/conventional-changelog-generator@v1.0.6-release
       id: release_notes
-      uses: fresa/release-notes-generator@main
+      if: ${{ github.ref_name == 'prod' }}
       with:
-        version: ${{ steps.tag.outputs.value }}
-        from_ref_exclusive: tags/${{ steps.latest_release_info.outputs.tag_name }}
-        to_ref_inclusive: ${{ steps.tag.outputs.value }}
+        commit-types: "fix:Bug Fixes,feat:Features,ref:Refactoring,chore:Other"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        current-tag: ${{ steps.tag.outputs.value }}
     - uses: softprops/action-gh-release@master
       name: Publish GitHub release
+      if: ${{ github.ref_name == 'prod' }}
       with:
         name: ${{ steps.tag.outputs.value }}
         tag_name: ${{ steps.tag.outputs.value }}
-        body: ${{ steps.release_notes.output.release_notes }}
+        body: ${{ steps.release_notes.output.changelog }}
