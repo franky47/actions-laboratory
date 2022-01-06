@@ -23,7 +23,7 @@ jobs:
       if: ${{ github.ref_name == 'prod' }}
       with:
         commit-types: "fix:Bug Fixes,feat:Features,ref:Refactoring,chore:Other"
-        token: ${{ secrets.GITHUB_TOKEN }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
         current-tag: ${{ steps.tag.outputs.value }}
     - uses: softprops/action-gh-release@master
       name: Publish GitHub release
