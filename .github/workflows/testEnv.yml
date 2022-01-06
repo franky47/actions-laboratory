@@ -9,6 +9,7 @@ jobs:
     if: ${{ github.ref_name == 'prod' || github.ref_name == 'staging' }}
     steps:
     - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+    - run: git fetch --prune --unshallow --tags
     - id: tag
       name: Generate release tag
       run: echo "::set-output name=value::${{ github.ref_name }}.$(date +%Y-%m-%d_%H.%M.%S)@$(echo $GITHUB_SHA | cut -c1-8)"
