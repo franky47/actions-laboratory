@@ -30,7 +30,7 @@ jobs:
         version: ${{ steps.tag.outputs.value }}
         from_ref_exclusive: tags/${{ steps.latest_release_info.outputs.tag_name }}
         to_ref_inclusive: ${{ steps.tag.outputs.value }}
-    - uses: softprops/action-gh-release
+    - uses: softprops/action-gh-release@master
       name: Publish GitHub release
       with:
         name: ${{ steps.tag.outputs.value }}
