@@ -5,7 +5,6 @@ on:
 
 jobs:
   echoPREnv:
-    name: ${{ steps.tag.outputs.value:"Dynamic name" }}
     runs-on: ubuntu-latest
     if: ${{ github.ref_name == 'prod' || github.ref_name == 'staging' }}
     steps:
