@@ -12,7 +12,7 @@ jobs:
     - run: git fetch --prune --unshallow --tags
     - id: tag
       name: Generate release tag
-      run: echo "::set-output name=value::${{ github.ref_name }}@$(date +%Y-%m-%d/%H.%M.%S)/$(echo $GITHUB_SHA | cut -c1-8)"
+      run: echo "::set-output name=value::${{ github.ref_name }}@$(date +%Y-%m-%d_%H.%M.%S)_$(echo $GITHUB_SHA | cut -c1-8)"
     - run: echo ${{ steps.tag.outputs.value }}
     - run: echo ${{ github.ref_name == 'prod' && 'production' || 'staging' }}
     - uses: hole19/git-tag-action@67be507b7332465ace778ee3dad62657482fedfb
