@@ -21,7 +21,7 @@ jobs:
             # Some comment here
             123=456
             with_equals=k1.aesgcm256.NS5wL0fSYZObRHddlB-sNP28Hw1EJKVYqnpCtOjaTAE=
-            FAIL=true
+            FAIL=false
 
             Technically, we can also have plain-text docs, as long as they
             don't contain an equals sign.
