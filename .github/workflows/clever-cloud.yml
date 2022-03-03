@@ -7,8 +7,9 @@ jobs:
   cc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
-      - run: git fetch --prune --unshallow # Required for Clever Cloud deployments
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - id: release-tag
         name: Generate release tag
         run: echo "::set-output name=value::${{ github.ref_name }}@$(date +%Y-%m-%d_%H.%M.%S)_$(echo $GITHUB_SHA | cut -c1-8)"
