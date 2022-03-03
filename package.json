@@ -8,5 +8,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./main.js"
+  },
+  "dependencies": {
+    "fastify": "^3.27.2"
   }
 }
