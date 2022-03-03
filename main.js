@@ -12,6 +12,6 @@ server.get('/', (_req, res) => {
   })
 })
 
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, '0.0.0.0', () => {
   setTimeout(() => server.close(), 10000)
 })
