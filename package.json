@@ -1,0 +1,12 @@
+{
+  "name": "actions-laboratory",
+  "version": "0.0.0",
+  "private": true,
+  "main": "main.js",
+  "repository": "https://github.com/franky47/actions-laboratory.git",
+  "author": "Francois Best <francois@francoisbest.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./main.js"
+  }
+}
