@@ -2,6 +2,10 @@
 
 const { fastify } = require('fastify')
 
+if (process.env.FAIL === 'true') {
+  throw new Error('Simulated failure')
+}
+
 const server = fastify({
   logger: true,
 })
