@@ -16,7 +16,6 @@ jobs:
         name: Deploy to Clever Cloud
         with:
           appID: app_7dba9ffa-f243-469a-8aa0-c0be3fcaa88f
-          timeout: 600 # 10 minutes
           setEnv: |
             RELEASE_TAG=${{ steps.release-tag.outputs.value }}
             # Some comment here
