@@ -16,13 +16,14 @@ jobs:
       - uses: 47ng/actions-clever-cloud@v1.1
         name: Deploy to Clever Cloud
         with:
-          appID: app_7dba9ffa-f243-469a-8aa0-c0be3fcaa88f
+          appID: app_6830cbcd-3cf0-48c2-952d-af1425b7d901
           setEnv: |
             RELEASE_TAG=${{ steps.release-tag.outputs.value }}
             # Some comment here
             123=456
             with_equals=k1.aesgcm256.NS5wL0fSYZObRHddlB-sNP28Hw1EJKVYqnpCtOjaTAE=
             FAIL=false
+            BUILD_URL=https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
 
             Technically, we can also have plain-text docs, as long as they
             don't contain an equals sign.
