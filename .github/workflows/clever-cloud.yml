@@ -24,6 +24,7 @@ jobs:
             with_equals=k1.aesgcm256.NS5wL0fSYZObRHddlB-sNP28Hw1EJKVYqnpCtOjaTAE=
             FAIL=false
             BUILD_URL=https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
+            CC_POST_BUILD_HOOK=yarn run annotate
 
             Technically, we can also have plain-text docs, as long as they
             don't contain an equals sign.
