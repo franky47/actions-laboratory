@@ -13,7 +13,7 @@ jobs:
       - id: release-tag
         name: Generate release tag
         run: echo "::set-output name=value::${{ github.ref_name }}@$(date +%Y-%m-%d_%H.%M.%S)_$(echo $GITHUB_SHA | cut -c1-8)"
-      - uses: 47ng/actions-clever-cloud@v1.1
+      - uses: docker://47ng/actions-clever-cloud:feat-logs
         name: Deploy to Clever Cloud
         with:
           appID: app_6830cbcd-3cf0-48c2-952d-af1425b7d901
@@ -28,6 +28,13 @@ jobs:
 
             Technically, we can also have plain-text docs, as long as they
             don't contain an equals sign.
+          logFile: ${{ github.workspace }}/clever.log
         env:
           CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
           CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}
+      - uses: actions/upload-artifact@v2
+        name: Upload deployment logs
+        with:
+          name: clever.log
+          path: clever.log
+          retention-days: 1
