@@ -28,6 +28,7 @@ jobs:
 
             Technically, we can also have plain-text docs, as long as they
             don't contain an equals sign.
+          force: true
           logFile: ${{ github.workspace }}/clever.log
         env:
           CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
