@@ -25,9 +25,6 @@ jobs:
             FAIL=false
             BUILD_URL=https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
             CC_POST_BUILD_HOOK=yarn run annotate
-
-            Technically, we can also have plain-text docs, as long as they
-            don't contain an equals sign.
           force: true
           quiet: false
           logFile: ./clever.log
