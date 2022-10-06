@@ -20,7 +20,6 @@ jobs:
           setEnv: |
             RELEASE_TAG=${{ steps.release-tag.outputs.value }}
             # Some comment here
-            123=456
             with_equals=k1.aesgcm256.NS5wL0fSYZObRHddlB-sNP28Hw1EJKVYqnpCtOjaTAE=
             FAIL=false
             BUILD_URL=https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
