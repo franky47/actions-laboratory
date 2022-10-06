@@ -13,7 +13,7 @@ jobs:
       - id: release-tag
         name: Generate release tag
         run: echo "::set-output name=value::${{ github.ref_name }}@$(date +%Y-%m-%d_%H.%M.%S)_$(echo $GITHUB_SHA | cut -c1-8)"
-      - uses: docker://47ng/actions-clever-cloud:feat-logs
+      - uses: 47ng/actions-clever-cloud@v1.3.0
         name: Deploy to Clever Cloud
         with:
           appID: app_6830cbcd-3cf0-48c2-952d-af1425b7d901
@@ -24,8 +24,6 @@ jobs:
             FAIL=false
             BUILD_URL=https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
             CC_POST_BUILD_HOOK=yarn run annotate
-          force: true
-          quiet: false
           logFile: ./clever.log
         env:
           CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}

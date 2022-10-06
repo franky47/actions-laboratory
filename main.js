@@ -6,6 +6,9 @@ if (process.env.FAIL === 'true') {
   throw new Error('Simulated failure')
 }
 
+console.log(`::warning title=Release tag::${process.env.RELEASE_TAG}`)
+console.log('::error ::oh no!')
+
 const server = fastify({
   logger: true,
 })
