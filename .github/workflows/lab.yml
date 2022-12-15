@@ -24,7 +24,11 @@ jobs:
             echo "ghcr.io/${{ github.repository }}/foo:git-${{ github.ref_name }}-${{ github.sha }}" >> $GITHUB_OUTPUT
             echo '__TAGS_EOF__' >> $GITHUB_OUTPUT
 
-      - name: Consume Docker labels
-        run: echo "${{ steps.docker-labels-tags.outputs.labels }}" | sed -e 's/^/- 🏷 /gm' >> $GITHUB_STEP_SUMMARY
-      - name: Consume Docker tags
-        run: echo "${{ steps.docker-labels-tags.outputs.tags }}" | sed -e 's/^/- 🐳 /gm' >> $GITHUB_STEP_SUMMARY
+      - name: Generate step summary
+        run: |
+          echo "## Docker labels" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.docker-labels-tags.outputs.labels }}" | sed -e 's/^/- 🏷  /gm' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Docker tags" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.docker-labels-tags.outputs.tags }}" | sed -e 's/^/- 🐳  /gm' >> $GITHUB_STEP_SUMMARY
+
