@@ -22,11 +22,16 @@ jobs:
           echo "version=$(cat unknown)" >> $GITHUB_OUTPUT;
         fi
 
+    - name: Display both
+      run: |
+        echo y ${{ steps.file-exists.outputs.version }}
+        echo n ${{ steps.file-does-not-exist.outputs.version }}
+
     - name: Run if yes
       if: ${{ steps.file-exists.outputs.version }}
-      run: echo Yep
+      run: echo ${{ steps.file-exists.outputs.version }}
 
     - name: Run if nope
       if: ${{ steps.file-does-not-exist.outputs.version }}
-      run: echo Nope
+      run: echo ${{ steps.file-does-not-exist.outputs.version }}
 
