@@ -13,6 +13,7 @@ jobs:
       run: test -f test && echo "version=$(cat test)" >> $GITHUB_OUTPUT | true
     - id: file-does-not-exist
       run: test -f unknown && echo "version=$(cat unknown)" >> $GITHUB_OUTPUT | true
+      continue-on-error: true
 
     - name: Show outputs
       run: |
