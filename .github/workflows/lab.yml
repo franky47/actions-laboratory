@@ -26,14 +26,13 @@ jobs:
 
       - name: Generate step summary
         run: |
-          echo "## 🐳  Docker image" >> $GITHUB_STEP_SUMMARY
+          echo "## 🐳 &nbsp;Docker image" >> $GITHUB_STEP_SUMMARY
           echo "Digest: \`0d6e157b47fbada65e28e23ab8db7a723de014a2e3a969014be5a22dd470b146\`" >> $GITHUB_STEP_SUMMARY
-          echo "### 📌  Tags" >> $GITHUB_STEP_SUMMARY
+          echo "### 📌 &nbsp;Tags" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "${{ steps.docker-labels-tags.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🏷  Labels" >> $GITHUB_STEP_SUMMARY
+          echo "### 🏷 &nbsp;Labels" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "${{ steps.docker-labels-tags.outputs.labels }}" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
