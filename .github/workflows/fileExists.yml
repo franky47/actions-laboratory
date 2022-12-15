@@ -10,9 +10,9 @@ jobs:
     - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
     - run: git fetch --prune --unshallow --tags
     - id: file-exists
-      run: test -f test && echo "version=$(cat test)" >> $GITHUB_OUTPUT | true
+      run: if test -f test; then echo "version=$(cat test)" >> $GITHUB_OUTPUT; fi
     - id: file-does-not-exist
-      run: test -f unknown && echo "version=$(cat unknown)" >> $GITHUB_OUTPUT | true
+      run: if test -f unknown; then echo "version=$(cat unknown)" >> $GITHUB_OUTPUT; fi
       continue-on-error: true
 
     - name: Run if yes
