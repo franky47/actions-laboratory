@@ -25,6 +25,6 @@ jobs:
             echo '__TAGS_EOF__' >> $GITHUB_OUTPUT
 
       - name: Consume Docker labels
-        run: echo "${{ steps.docker-labels-tags.outputs.labels }}"
+        run: echo "${{ steps.docker-labels-tags.outputs.labels }}" | sed -s '/\n/\n - 🏷 /' >> $GITHUB_STEP_SUMMARY
       - name: Consume Docker tags
-        run: echo "${{ steps.docker-labels-tags.outputs.tags }}"
+        run: echo "${{ steps.docker-labels-tags.outputs.tags }}" | sed -s '/\n/\n - 🐳 /' >> $GITHUB_STEP_SUMMARY
