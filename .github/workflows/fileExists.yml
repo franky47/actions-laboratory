@@ -9,10 +9,10 @@ jobs:
     steps:
     - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
     - run: git fetch --prune --unshallow --tags
-    - id: file-does-not-exist
-      run: test -f unknown && echo "version=$(cat unknown)" >> $GITHUB_OUTPUT | true
     - id: file-exists
       run: test -f test && echo "version=$(cat test)" >> $GITHUB_OUTPUT | true
+    - id: file-does-not-exist
+      run: test -f unknown && echo "version=$(cat unknown)" >> $GITHUB_OUTPUT | true
 
     - name: Show outputs
       run: |
