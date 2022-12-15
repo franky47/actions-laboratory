@@ -15,7 +15,11 @@ jobs:
       run: test -f unknown && echo "version=$(cat unknown)" >> $GITHUB_OUTPUT | true
       continue-on-error: true
 
-    - name: Show outputs
-      run: |
-        echo Nope: ${{ steps.file-does-not-exist.outputs.version }}
-        echo Yep:  ${{ steps.file-exists.outputs.version }}
+    - name: Run if yes
+      if: ${{ steps.file-exists.outputs.version }}
+      run: echo Yep
+
+    - name: Run if nope
+      if: ${{ steps.file-does-not-exist.outputs.version }}
+      run: echo Nope
+
