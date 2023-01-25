@@ -14,8 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          cat <<___EOF___ > ./blog/${{ github.event.discussion.title }}.md
+          cat <<___EOF___ > ./blog/${{ github.event.discussion.id }}.md
             ${{ github.event.discussion.body }}
           ___EOF___
-          cat ./blog/${{ github.event.discussion.title }}.md
+          cat ./blog/${{ github.event.discussion.id }}.md
       - run: git add -a && git commit -m "Edit" && git push
