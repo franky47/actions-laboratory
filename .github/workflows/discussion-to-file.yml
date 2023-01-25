@@ -13,7 +13,7 @@ jobs:
     if: ${{ github.event.discussion.category.slug == 'blog-posts' }}
     steps:
       - uses: actions/checkout@v3
-      - run: echo "${{ toJSON(github.event.discussion) }}" > event.json
+      - run: echo '${{ toJSON(github.event.discussion) }}' > event.json
       - run: cat event.json | jq -r '.body' > ./blog/${{ github.event.discussion.number }}.md
       - run: cat ./blog/${{ github.event.discussion.number }}.md
       - run: rm -f event.json
