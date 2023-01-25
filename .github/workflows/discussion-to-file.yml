@@ -13,6 +13,6 @@ jobs:
     if: ${{ github.event.discussion.category.slug == 'blog-posts' }}
     steps:
       - uses: actions/checkout@v3
-      - run: echo "${{ github.event.discussion.body }}" | jq -r > ./blog/${{ github.event.discussion.number }}.md
+      - run: cat >./blog/${{ github.event.discussion.number }}.md <<___EOL___${{ github.event.discussion.body | jq -r }}___EOL___
       - run: cat ./blog/${{ github.event.discussion.number }}.md
-      - run: git add -a && git commit -m "Edit" && git push
+      - run: git add --all && git commit -m "Edit" && git push
