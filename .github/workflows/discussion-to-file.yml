@@ -13,9 +13,6 @@ jobs:
     if: ${{ github.event.discussion.category.slug == 'blog-posts' }}
     steps:
       - uses: actions/checkout@v3
-      - name: Generate timestamp
-        id: timestamp
-        run: echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
       - id: slug
         run: echo "slug=$(echo '${{ github.event.discussion.title }}' | sed -e 's/[^[:alnum:]]/-/g' -e 's/^-*//' -e 's/-*$//' -e 's/--/-/g' | tr A-Z a-z)" >> $GITHUB_OUTPUT
       - name: Write File
@@ -26,8 +23,10 @@ jobs:
             ---
             title: ${{ github.event.discussion.title}}
             slug: ${{ steps.slug.outputs.slug }}
-            updatedAt: ${{steps.timestamp.outputs.timestamp}}
+            updatedAt: ${{ github.event.discussion.updated_at }}
+            publishedAt: ${{ github.event.discussion.answer_chosen_at }}
             ---
+
             ${{ github.event.discussion.body }}
           write-mode: overwrite
 
