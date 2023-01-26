@@ -17,7 +17,7 @@ jobs:
         uses: DamianReeves/write-file-action@v1.2
         with:
           path: ./blog/${{ github.event.discussion.number }}.md
-          contents: ${{ fromJSON(github.event.discussion.body) }}
+          contents: ${{ github.event.discussion.body }}
           write-mode: overwrite
       # - run: cat event.json
       # - run: cat event.json | jq -r '.body' > ./blog/${{ github.event.discussion.number }}.md
