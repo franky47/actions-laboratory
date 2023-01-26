@@ -27,16 +27,13 @@ jobs:
             publishedAt: ${{ github.event.discussion.created_at }}
             ---
 
+            # ${{ github.event.discussion.title }}
+
             ${{ github.event.discussion.body }}
 
             [Comment this post on GitHub](${{ github.event.discussion.html_url }})
           write-mode: overwrite
-
-
-      # - run: cat event.json
-      # - run: cat event.json | jq -r '.body' > ./blog/${{ github.event.discussion.number }}.md
       - run: cat ./blog/${{ github.event.discussion.number }}.md
-      # - run: rm -f event.json
       - name: Commit & Push
         uses: Andro999b/push@v1.3
         with:
