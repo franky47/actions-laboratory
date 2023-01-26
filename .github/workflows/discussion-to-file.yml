@@ -36,11 +36,7 @@ jobs:
       # - run: cat event.json | jq -r '.body' > ./blog/${{ github.event.discussion.number }}.md
       - run: cat ./blog/${{ github.event.discussion.number }}.md
       # - run: rm -f event.json
-      - run: ! git diff-index --quiet HEAD --
-        id: check-for-changes
-        continue-on-error: true
       - name: Commit & Push
-        if: ${{ steps.check-for-changes.outcome == 'success' }}
         uses: Andro999b/push@v1.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
