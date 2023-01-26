@@ -6,8 +6,6 @@ on:
       - created
       - edited
       - category_changed
-      - answered
-      - unanswered
 
 jobs:
   discussionToFile:
@@ -26,7 +24,7 @@ jobs:
             title: ${{ github.event.discussion.title}}
             slug: ${{ steps.slug.outputs.slug }}
             updatedAt: ${{ github.event.discussion.updated_at }}
-            publishedAt: ${{ github.event.discussion.answer_chosen_at }}
+            publishedAt: ${{ github.event.discussion.created_at }}
             ---
 
             ${{ github.event.discussion.body }}
