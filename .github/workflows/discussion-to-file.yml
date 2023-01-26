@@ -13,17 +13,34 @@ jobs:
     if: ${{ github.event.discussion.category.slug == 'blog-posts' }}
     steps:
       - uses: actions/checkout@v3
+      - name: Generate timestamp
+        id: timestamp
+        run: echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
+      - id: slug
+        run: echo "slug=$(echo '${{ github.event.discussion.title }}' | sed -e 's/[^[:alnum:]]/-/g' -e 's/^-*//' -e 's/-*$//' -e 's/--/-/g' | tr A-Z a-z) >> $GITHUB_OUTPUT
       - name: Write File
         uses: DamianReeves/write-file-action@v1.2
         with:
           path: ./blog/${{ github.event.discussion.number }}.md
-          contents: ${{ github.event.discussion.body }}
+          contents: |
+            ---
+            title: ${{ github.event.discussion.title}}
+            slug: ${{ steps.slug.outputs.slug }}
+            updatedAt: ${{steps.timestamp.outputs.timestamp}}
+            ---
+            ${{ github.event.discussion.body }}
           write-mode: overwrite
+
+
       # - run: cat event.json
       # - run: cat event.json | jq -r '.body' > ./blog/${{ github.event.discussion.number }}.md
       - run: cat ./blog/${{ github.event.discussion.number }}.md
       # - run: rm -f event.json
+      - run: ! git diff-index --quiet HEAD --
+        id: check-for-changes
+        continue-on-error: true
       - name: Commit & Push
+        if: ${{ steps.check-for-changes.outcome == 'success' }}
         uses: Andro999b/push@v1.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
