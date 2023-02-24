@@ -4,8 +4,12 @@ on:
   push:
 
 jobs:
-  lab:
+  mkcert:
     runs-on: ubuntu-latest
     steps:
-      - name: Is mkcert available?
-        run: mkcert --version
+      - name: Install mkcert
+        run: |
+          apt install libnss3-tools
+          curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
+          chmod +x mkcert-v*-linux-amd64
+          sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
