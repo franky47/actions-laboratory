@@ -14,3 +14,7 @@ jobs:
           chmod +x mkcert-v*-linux-amd64
           sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
           mkcert --version
+      - name: Install root CA
+        run: mkcert -install
+      - name: Generate certificates
+        run: mkcert example.com "*.example.com" example.test localhost 127.0.0.1 ::1
