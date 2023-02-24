@@ -1,0 +1,11 @@
+name: mkcert
+
+on:
+  push:
+
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Is mkcert available?
+        run: mkcert --version
