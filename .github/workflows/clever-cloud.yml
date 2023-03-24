@@ -20,6 +20,7 @@ jobs:
         with:
           appID: app_6830cbcd-3cf0-48c2-952d-af1425b7d901
           force: true
+          quiet: false
           setEnv: |
             RELEASE_TAG=${{ steps.release-tag.outputs.value }}
             INDEX=2
