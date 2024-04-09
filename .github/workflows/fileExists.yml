@@ -2,36 +2,37 @@ name: Test if file exists
 
 on:
   push:
+    branches:
+      - file
 
 jobs:
   file-exists:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
-    - run: git fetch --prune --unshallow --tags
-    - id: file-exists
-      run: |
-        if test -f test;
-        then
-          echo "version=$(cat test)" >> $GITHUB_OUTPUT;
-        fi
-    - id: file-does-not-exist
-      run: |
-        if test -f unknown;
-        then
-          echo "version=$(cat unknown)" >> $GITHUB_OUTPUT;
-        fi
+      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      - run: git fetch --prune --unshallow --tags
+      - id: file-exists
+        run: |
+          if test -f test;
+          then
+            echo "version=$(cat test)" >> $GITHUB_OUTPUT;
+          fi
+      - id: file-does-not-exist
+        run: |
+          if test -f unknown;
+          then
+            echo "version=$(cat unknown)" >> $GITHUB_OUTPUT;
+          fi
 
-    - name: Display both
-      run: |
-        echo y ${{ steps.file-exists.outputs.version }}
-        echo n ${{ steps.file-does-not-exist.outputs.version }}
+      - name: Display both
+        run: |
+          echo y ${{ steps.file-exists.outputs.version }}
+          echo n ${{ steps.file-does-not-exist.outputs.version }}
 
-    - name: Run if yes
-      if: ${{ steps.file-exists.outputs.version }}
-      run: echo ${{ steps.file-exists.outputs.version }}
+      - name: Run if yes
+        if: ${{ steps.file-exists.outputs.version }}
+        run: echo ${{ steps.file-exists.outputs.version }}
 
-    - name: Run if nope
-      if: ${{ steps.file-does-not-exist.outputs.version }}
-      run: echo ${{ steps.file-does-not-exist.outputs.version }}
-
+      - name: Run if nope
+        if: ${{ steps.file-does-not-exist.outputs.version }}
+        run: echo ${{ steps.file-does-not-exist.outputs.version }}

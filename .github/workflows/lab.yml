@@ -2,6 +2,8 @@ name: Laboratory
 
 on:
   push:
+    branches:
+      - lab
 
 jobs:
   lab:
@@ -10,19 +12,19 @@ jobs:
       - name: Collect Docker labels & tags
         id: docker-labels-tags
         run: |
-            echo 'labels<<__LABELS_EOF__' >> $GITHUB_OUTPUT
-            echo "org.opencontainers.image.title=foo" >> $GITHUB_OUTPUT
-            echo "org.opencontainers.image.description=Some description" >> $GITHUB_OUTPUT
-            echo "org.opencontainers.image.revision=${{ github.sha }}" >> $GITHUB_OUTPUT
-            echo "org.opencontainers.image.licenses=MIT" >> $GITHUB_OUTPUT
-            echo "org.opencontainers.image.source=https//github.com/${{ github.repository }}/tree/${{ github.sha }}" >> $GITHUB_OUTPUT
-            echo "org.opencontainers.image.documentation=https//github.com/${{ github.repository }}" >> $GITHUB_OUTPUT
-            echo '__LABELS_EOF__' >> $GITHUB_OUTPUT
+          echo 'labels<<__LABELS_EOF__' >> $GITHUB_OUTPUT
+          echo "org.opencontainers.image.title=foo" >> $GITHUB_OUTPUT
+          echo "org.opencontainers.image.description=Some description" >> $GITHUB_OUTPUT
+          echo "org.opencontainers.image.revision=${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "org.opencontainers.image.licenses=MIT" >> $GITHUB_OUTPUT
+          echo "org.opencontainers.image.source=https//github.com/${{ github.repository }}/tree/${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "org.opencontainers.image.documentation=https//github.com/${{ github.repository }}" >> $GITHUB_OUTPUT
+          echo '__LABELS_EOF__' >> $GITHUB_OUTPUT
 
-            echo 'tags<<__TAGS_EOF__' >> $GITHUB_OUTPUT
-            echo "ghcr.io/${{ github.repository }}/foo:${{ github.ref_name == 'main' && 'latest' || 'edge' }}" >> $GITHUB_OUTPUT
-            echo "ghcr.io/${{ github.repository }}/foo:git-${{ github.ref_name }}-${{ github.sha }}" >> $GITHUB_OUTPUT
-            echo '__TAGS_EOF__' >> $GITHUB_OUTPUT
+          echo 'tags<<__TAGS_EOF__' >> $GITHUB_OUTPUT
+          echo "ghcr.io/${{ github.repository }}/foo:${{ github.ref_name == 'main' && 'latest' || 'edge' }}" >> $GITHUB_OUTPUT
+          echo "ghcr.io/${{ github.repository }}/foo:git-${{ github.ref_name }}-${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo '__TAGS_EOF__' >> $GITHUB_OUTPUT
 
       - name: Generate step summary
         run: |
@@ -36,4 +38,3 @@ jobs:
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "${{ steps.docker-labels-tags.outputs.labels }}" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-
