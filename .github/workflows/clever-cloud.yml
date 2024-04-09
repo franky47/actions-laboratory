@@ -27,6 +27,8 @@ jobs:
             BUILD_URL=https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
             CC_POST_BUILD_HOOK=yarn run annotate
           logFile: ./clever.log
+          quiet: false
+          force: true
         env:
           CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
           CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}
