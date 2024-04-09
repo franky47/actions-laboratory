@@ -26,9 +26,9 @@ jobs:
             | tr -d '#'                 \
           )
           if [ "$tag" == "master" ]; then
-            echo latest >> $GITHUB_OUTPUT
+            echo "tag=latest" >> $GITHUB_OUTPUT
           else
-            echo $tag >> $GITHUB_OUTPUT
+            echo "tag=$tag" >> $GITHUB_OUTPUT
           fi
       - run: echo ${{ steps.docker-tag.outputs.tag }}
       - uses: docker://47ng/actions-clever-cloud:207_merge
