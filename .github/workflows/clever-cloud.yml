@@ -23,7 +23,7 @@ jobs:
             RELEASE_TAG=${{ steps.release-tag.outputs.tag }}
             INDEX=2
             with_equals=k1.aesgcm256.NS5wL0fSYZObRHddlB-sNP28Hw1EJKVYqnpCtOjaTAE=
-            FAIL=false
+            FAIL=true
             BUILD_URL=https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
             CC_POST_BUILD_HOOK=yarn run annotate
           logFile: ./clever.log
