@@ -23,7 +23,7 @@ jobs:
             | sed 's#refs/tags/##g'     \
             | sed 's#refs/pull/##g'     \
             | tr '/' '_'                \
-            | tr '#' ''                 \
+            | tr -d '#'                 \
           )
           if [ "$tag" == "master" ]; then
             echo latest >> $GITHUB_OUTPUT
