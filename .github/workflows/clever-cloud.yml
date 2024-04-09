@@ -9,18 +9,18 @@ jobs:
   cc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - id: release-tag
         name: Generate release tag
-        run: echo "::set-output name=value::${{ github.ref_name }}@$(date +%Y-%m-%d_%H.%M.%S)_$(echo $GITHUB_SHA | cut -c1-8)"
+        run: echo "tag=${{ github.ref_name }}@$(date +%Y-%m-%d_%H.%M.%S)_$(echo $GITHUB_SHA | cut -c1-8)" >> $GITHUB_OUTPUT
       - uses: docker://47ng/actions-clever-cloud:v2-test
         name: Deploy to Clever Cloud
         with:
           appID: app_6830cbcd-3cf0-48c2-952d-af1425b7d901
           setEnv: |
-            RELEASE_TAG=${{ steps.release-tag.outputs.value }}
+            RELEASE_TAG=${{ steps.release-tag.outputs.tag }}
             INDEX=2
             with_equals=k1.aesgcm256.NS5wL0fSYZObRHddlB-sNP28Hw1EJKVYqnpCtOjaTAE=
             FAIL=false
@@ -32,7 +32,7 @@ jobs:
         env:
           CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
           CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         name: Upload deployment logs
         with:
           name: clever.log
