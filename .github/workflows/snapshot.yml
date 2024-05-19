@@ -1,9 +1,13 @@
 name: Snapshot release
-run-name: 'Snapshot release ${{ github.ref_name }}'
+run-name: 'Snapshot release ${{ inputs.version }}'
 
 on:
   workflow_dispatch:
-
+    inputs:
+      version:
+        description: Base version to use for the release
+        required: true
+        type: string
 env:
   FORCE_COLOR: 3 # Diplay chalk colors
 
@@ -12,11 +16,11 @@ jobs:
     name: Deployment
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
-      - uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d
-      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
-        with:
-          node-version-file: .node-version
-          cache: pnpm
-      - name: Install dependencies
-        run: pnpm install
+      - name: Generate snapshot version
+        id: version
+        run: |
+          version="${{inputs.version}}-snapshot.$(date +%Y-%m-%d).$(echo $GITHUB_SHA | cut -c1-8)"
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "::notice title=Version::${version}"
+      - name: Display release tag
+        run: echo "::notice title=Version (ext)::${{ steps.version.outputs.version }}"
