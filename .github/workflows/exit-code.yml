@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Pre-condition
         run: |
-          exit 0
+          exit 78
 
       - name: Does this run?
         run: echo "This should not run"
