@@ -15,5 +15,5 @@ jobs:
           echo "skip=true" >> $GITHUB_OUTPUT
 
       - name: Does this run?
-        if: steps.pre-condition.outputs.skip == 'true'
+        if: steps.pre-condition.outputs.skip != 'true'
         run: echo "This should not run"
