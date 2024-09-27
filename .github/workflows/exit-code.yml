@@ -1,0 +1,17 @@
+name: Exit code
+
+on:
+  push:
+    branches:
+      - exit-code
+
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pre-condition
+        run: |
+          exit 0
+
+      - name: Does this run?
+        run: echo "This should not run"
