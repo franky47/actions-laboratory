@@ -22,5 +22,3 @@ jobs:
           version="${{inputs.version}}-snapshot.$(date +%Y-%m-%d).$(echo $GITHUB_SHA | cut -c1-8)"
           echo "version=${version}" >> $GITHUB_OUTPUT
           echo "::notice title=Version::${version}"
-      - name: Display release tag
-        run: echo "::notice title=Version (ext)::${{ steps.version.outputs.version }}"

@@ -12,12 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
         with:
-          ref: main
+          fetch-depth: 0
+          fetch-tags: false
       - name: Move clever to main & push
         run: |
-          git fetch origin clever:clever --no-tags
           git checkout clever
-          git merge --ff-only origin/clever
           git reset --hard main
           git push origin clever
         env:
