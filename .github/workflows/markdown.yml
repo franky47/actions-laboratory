@@ -1,4 +1,4 @@
-name: Move `master` to `main`
+name: Move `clever` to `main`
 
 on:
   workflow_dispatch:
@@ -13,11 +13,10 @@ jobs:
       - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
         with:
           ref: main
-      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
-        with:
-          ref: clever
       - name: Move clever to main & push
         run: |
+          git fetch origin clever:clever
+          git checkout clever
           git reset --hard main
           git push origin clever
         env:
