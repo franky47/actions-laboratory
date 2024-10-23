@@ -1,0 +1,15 @@
+name: Move `master` to `next`
+
+on:
+  workflow_dispatch:
+env:
+  FORCE_COLOR: 3 # Diplay chalk colors
+
+jobs:
+  snapshot:
+    name: Move `master` to `next`
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
+        with:
+          ref: main
