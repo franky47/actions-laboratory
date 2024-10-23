@@ -1,4 +1,4 @@
-name: Move `master` to `next`
+name: Move `master` to `main`
 
 on:
   workflow_dispatch:
@@ -7,9 +7,18 @@ env:
 
 jobs:
   snapshot:
-    name: Move `master` to `next`
+    name: Move `clever` to `main`
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
         with:
           ref: main
+      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938
+        with:
+          ref: clever
+      - name: Move clever to main & push
+        run: |
+          git reset --hard main
+          git push origin clever
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
