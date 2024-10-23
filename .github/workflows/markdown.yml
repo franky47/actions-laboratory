@@ -15,8 +15,9 @@ jobs:
           ref: main
       - name: Move clever to main & push
         run: |
-          git fetch origin clever:clever
+          git fetch origin clever:clever --no-tags
           git checkout clever
+          git merge --ff-only origin/clever
           git reset --hard main
           git push origin clever
         env:
