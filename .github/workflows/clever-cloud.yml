@@ -3,8 +3,7 @@ name: Test Clever Cloud action
 on:
   workflow_run:
     workflows: ['Move `clever` to `main`']
-    types:
-      - completed
+    types: completed
   push:
     branches:
       - clever
