@@ -1,0 +1,37 @@
+name: Ship it
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ship-it:
+    name: Ship it
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          # Ensure full history is fetched to have a clear
+          # path between main and clever
+          fetch-depth: 0
+          ref: main
+
+      - name: Check clever can fast-forward to main
+        run: |
+          git fetch origin clever
+          if ! git merge-base --is-ancestor clever main; then
+            echo "::error::clever cannot be fast-forwarded to main. Aborting."
+            exit 1
+          fi
+      - name: Log commits to ship
+        run: git log clever..main --oneline
+
+      - name: Move clever to main branch
+        run: |
+          git checkout clever
+          git reset --hard main
+
+      - name: Push updated clever to origin
+        run: |
+          git push origin clever
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
