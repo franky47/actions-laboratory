@@ -15,20 +15,15 @@ jobs:
           fetch-depth: 0
           ref: main
 
-      - name: Check clever can fast-forward to main
+      - name: Log commits to be shipped
+        run: |
+          git log --oneline clever..main
+
+      - name: Fast-forward clever to main
         run: |
           git fetch origin clever
-          if ! git merge-base --is-ancestor clever main; then
-            echo "::error::clever cannot be fast-forwarded to main. Aborting."
-            exit 1
-          fi
-      - name: Log commits to ship
-        run: git log clever..main --oneline
-
-      - name: Move clever to main branch
-        run: |
           git checkout clever
-          git reset --hard main
+          git merge --ff-only main
 
       - name: Push updated clever to origin
         run: |
