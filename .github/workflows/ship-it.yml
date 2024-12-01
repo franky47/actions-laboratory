@@ -15,15 +15,16 @@ jobs:
           fetch-depth: 0
           ref: main
 
-      - name: Log commits to be shipped
-        run: |
-          git log --oneline clever..main
-
-      - name: Fast-forward clever to main
+      - name: Checkout clever branch
         run: |
           git fetch origin clever
           git checkout clever
-          git merge --ff-only main
+
+      - name: Log commits to be shipped
+        run: git log --oneline clever..main
+
+      - name: Fast-forward clever to main
+        run: git merge --ff-only main
 
       - name: Push updated clever to origin
         run: |
