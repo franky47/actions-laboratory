@@ -1,0 +1,78 @@
+name: Test release email
+
+# Creates a pre-release whose body mirrors the `testing-html-comments` release,
+# so we can verify how HTML comments render in the email GitHub sends to repo
+# subscribers. Releases created here are authored by github-actions[bot], so the
+# repo owner (a watcher) receives the notification email.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag for the pre-release (must be unique)
+        required: false
+        default: ''
+
+# Avoid concurrent runs racing to create releases.
+concurrency:
+  group: test-release-email
+  cancel-in-progress: false
+
+jobs:
+  create-prerelease:
+    name: Create pre-release
+    runs-on: ubuntu-latest
+    # Only contents:write is needed to create the release/tag.
+    permissions:
+      contents: write
+    steps:
+      - name: Resolve tag
+        id: tag
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          tag="$INPUT_TAG"
+          if [ -z "$tag" ]; then
+            tag="email-test-$(date -u +%Y%m%d-%H%M%S)"
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Write release notes
+        run: |
+          cat > release-notes.md <<'EOF'
+          This is prose, should be visible in the email sent to repo subscribers.
+
+          <!-- this is an HTML comment, it should not be visible in the email -->
+
+          <!-- <changelog:preamble>
+          ```ts
+          const test = 'code block in a comment'
+          ```
+          </changelog:preamble> -->
+
+          <!-- changelog:preamble
+          ```ts
+          const test = 'code block in a comment'
+          ```
+          /changelog:preamble -->
+
+
+          <!-- changelog:preamble -->
+          ```ts
+          const test = 'this should be visible, but fenced by sentinels'
+          ```
+          <!-- /changelog:preamble -->
+          EOF
+
+      - name: Create pre-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag.outputs.tag }}
+          TARGET: ${{ github.sha }}
+        run: |
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Testing HTML comments (email)" \
+            --notes-file release-notes.md \
+            --prerelease \
+            --target "$TARGET"
