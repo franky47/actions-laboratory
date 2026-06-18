@@ -1,0 +1,71 @@
+name: Probe — can github-actions[bot] comment on a locked discussion?
+
+# One-off experiment for the nuqs release-finalize pipeline. Finalize runs under
+# GITHUB_TOKEN with `discussions: write` and may need to comment on a discussion
+# that happens to be locked. A repo *owner* can always comment on a locked
+# discussion (UI or API), so an owner-token test can't answer the real question —
+# only the github-actions[bot] actor that runs in production can. This dispatches
+# as that bot, attempts the comment on a locked discussion, reports whether it
+# succeeded (and on failure, the GraphQL error type that release-finalize's
+# `isUnrecoverable` would classify), then deletes the probe comment.
+
+on:
+  workflow_dispatch:
+    inputs:
+      discussion_number:
+        description: Number of a LOCKED discussion to probe
+        required: true
+        default: '21'
+
+permissions:
+  discussions: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    # Untrusted-input-free: every dynamic value is passed via env and consumed as
+    # data (jq args), never interpolated into the script body.
+    env:
+      GH_TOKEN: ${{ github.token }}
+      OWNER: ${{ github.repository_owner }}
+      REPO: ${{ github.event.repository.name }}
+      NUMBER: ${{ inputs.discussion_number }}
+    steps:
+      - name: Attempt, then delete, a comment on the locked discussion
+        run: |
+          # The `$owner`/`$id`/`$body` tokens in the single-quoted strings below
+          # are GraphQL variables, not shell variables — they must stay literal.
+          # shellcheck disable=SC2016
+          set -uo pipefail
+          gql() {
+            jq -nc --arg q "$1" --argjson v "$2" '{query: $q, variables: $v}' \
+              | curl -s -H "Authorization: bearer $GH_TOKEN" \
+                     -H "Content-Type: application/json" \
+                     -X POST https://api.github.com/graphql -d @-
+          }
+
+          # 1. Resolve the discussion's node id and confirm it is locked.
+          resolve=$(gql \
+            'query($owner:String!,$repo:String!,$number:Int!){ repository(owner:$owner,name:$repo){ discussion(number:$number){ id locked } } }' \
+            "$(jq -nc --arg o "$OWNER" --arg r "$REPO" --argjson n "$NUMBER" '{owner:$o,repo:$r,number:$n}')")
+          echo "resolve: $(echo "$resolve" | jq -c '{id:.data.repository.discussion.id, locked:.data.repository.discussion.locked, errors:(.errors//[]|map(.type))}')"
+          did=$(echo "$resolve" | jq -r '.data.repository.discussion.id // empty')
+          if [ -z "$did" ]; then echo "::error::could not resolve discussion #$NUMBER"; exit 1; fi
+          if [ "$(echo "$resolve" | jq -r '.data.repository.discussion.locked')" != "true" ]; then
+            echo "::warning::discussion #$NUMBER is NOT locked — this probe won't be meaningful."
+          fi
+
+          # 2. Attempt the comment AS github-actions[bot].
+          attempt=$(gql \
+            'mutation($id:ID!,$body:String!){ addDiscussionComment(input:{discussionId:$id, body:$body}){ comment { id url } } }' \
+            "$(jq -nc --arg id "$did" --arg b '🤖 CI probe (github-actions[bot]): testing whether the release-finalize bot can comment on a locked discussion. Auto-deleted.' '{id:$id, body:$b}')")
+          echo "attempt: $(echo "$attempt" | jq -c '{created:.data.addDiscussionComment.comment.id, url:.data.addDiscussionComment.comment.url, errors:(.errors//[]|map({type,message}))}')"
+
+          cid=$(echo "$attempt" | jq -r '.data.addDiscussionComment.comment.id // empty')
+          if [ -n "$cid" ]; then
+            echo "::notice::RESULT — github-actions[bot] CAN comment on a locked discussion; no special-casing needed in finalize."
+            del=$(gql 'mutation($id:ID!){ deleteDiscussionComment(input:{id:$id}){ comment { id } } }' "$(jq -nc --arg id "$cid" '{id:$id}')")
+            echo "cleanup: $(echo "$del" | jq -c '{deleted:.data.deleteDiscussionComment.comment.id, errors:(.errors//[]|map(.type))}')"
+          else
+            echo "::warning::RESULT — github-actions[bot] CANNOT comment on a locked discussion. The error type(s) above decide finalize behaviour: FORBIDDEN/NOT_FOUND → isUnrecoverable skips it (green); anything else → collected → red run."
+          fi
