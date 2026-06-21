@@ -34,15 +34,20 @@ jobs:
             echo "tag=$tag" >> $GITHUB_OUTPUT
           fi
       - run: echo ${{ steps.docker-tag.outputs.tag }}
-      - uses: 47ng/actions-clever-cloud@v2.0.0
+      - uses: docker://ghcr.io/47ng/actions-clever-cloud:pr-227
         name: Deploy to Clever Cloud
         with:
           appID: app_6830cbcd-3cf0-48c2-952d-af1425b7d901
+          # 120s in seconds, not ms (the bug fixed in 47ng/actions-clever-cloud#227).
+          # The app below hangs the deployment forever, so this timeout must fire,
+          # kill the `clever deploy` child, and let the workflow move on.
+          timeout: 120
           setEnv: |
             RELEASE_TAG=${{ steps.release-tag.outputs.tag }}
             INDEX=2
             with_equals=k1.aesgcm256.NS5wL0fSYZObRHddlB-sNP28Hw1EJKVYqnpCtOjaTAE=
             FAIL=false
+            INFINITE_LOOP=true
             BUILD_URL=https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
             CC_POST_BUILD_HOOK=yarn run annotate
           logFile: ./clever.log
