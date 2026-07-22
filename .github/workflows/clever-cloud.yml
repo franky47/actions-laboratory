@@ -54,7 +54,6 @@ jobs:
           quiet: false
           force: true
         env:
-          HOME: /home/node
           CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
           CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}
       - uses: actions/upload-artifact@v4
