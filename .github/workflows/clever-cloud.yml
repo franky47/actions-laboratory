@@ -34,7 +34,7 @@ jobs:
             echo "tag=$tag" >> $GITHUB_OUTPUT
           fi
       - run: echo ${{ steps.docker-tag.outputs.tag }}
-      - uses: docker://ghcr.io/47ng/actions-clever-cloud:git-6ead0f405e979695bb9f60b790cb59a7208e2194
+      - uses: docker://ghcr.io/47ng/actions-clever-cloud:git-4dd48f26bba036e9408d6453f58fa84f0df54ef5
         name: Deploy to Clever Cloud
         with:
           appID: app_6830cbcd-3cf0-48c2-952d-af1425b7d901
