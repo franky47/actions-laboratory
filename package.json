@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./main.js",
-    "annotate": "echo '::notice title=Hello::from within the deployment'"
+    "annotate": "node -e \"process.stdout.write('x'.repeat(262144))\""
   },
   "dependencies": {
     "fastify": "^3.27.2"

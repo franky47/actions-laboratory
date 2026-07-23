@@ -35,26 +35,20 @@ jobs:
           fi
       - run: echo ${{ steps.docker-tag.outputs.tag }}
       - uses: docker://ghcr.io/47ng/actions-clever-cloud:2.1.4
-        name: Deploy to Clever Cloud (expected failure for issue 184)
+        name: Deploy quietly with verbose child output (issue 232)
         with:
           appID: app_6830cbcd-3cf0-48c2-952d-af1425b7d901
+          timeout: 300
           setEnv: |
             RELEASE_TAG=${{ steps.release-tag.outputs.tag }}
             INDEX=2
             with_equals=k1.aesgcm256.NS5wL0fSYZObRHddlB-sNP28Hw1EJKVYqnpCtOjaTAE=
-            FAIL=true
+            FAIL=false
             INFINITE_LOOP=false
             BUILD_URL=https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
             CC_POST_BUILD_HOOK=yarn run annotate
-          logFile: ./clever.log
-          quiet: false
+          quiet: true
           force: true
         env:
           CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
           CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}
-      - uses: actions/upload-artifact@v4
-        name: Upload deployment logs
-        with:
-          name: clever.log
-          path: ./clever.log
-          retention-days: 1
